@@ -1,0 +1,88 @@
+#include <iostream>
+#include <vector>
+
+class merge_sort{
+	public:
+		std:: vector<int> temp;
+		void merge_two_area(std::vector<int>& arr, int left, int mid, int right){
+			int fidx=left;
+			int ridx=mid+1;
+			int sidx=left;
+			
+			while(fidx<=mid && ridx<=right){
+				if (arr[fidx]<=arr[ridx]){
+					temp[sidx]=arr[fidx];
+					fidx++;
+				}
+				else{
+					temp[sidx]=arr[ridx];
+					ridx++;
+				}
+				sidx++;
+			
+			//반복문이 끝나면 남은 덩어리 애들은 그냥 담아주기
+			if (fidx>mid){ 
+				for (int i=ridx;i<=right;i++){
+					temp[sidx]=arr[i];
+					sidx++;
+				}
+			} 
+			else{
+				for (int i=fidx;i<=mid;i++){
+					temp[sidx]=arr[i];
+					sidx++;
+				}
+			}
+			
+			for (int i=left;i<=right;i++){
+				arr[i]=temp[i];
+			}
+		}
+		
+		void mergesort(std::vector<int>& arr, int left, int right){
+			if (left<right){
+				int mid=(left+right)/2;
+				
+				mergesort(arr, left, mid);
+				mergesort(arr, mid+1, right);
+			
+				merge_two_area(arr, left, mid ,right);
+			}
+		}
+};
+
+int main(void){
+	std:: vector<int> v;
+	
+	int N;
+	
+	std::cout << "vector의 요소의 개수를 입력해주세요: ";
+	std::cin>> N;
+	std::cout<<std::endl; 
+	std::cout<<N<<"개의 숫자를 입력해주세요"<<std::endl;
+	
+	for (int i=0;i<N;i++){
+		int temp;
+		std::cin>>temp;
+		v.push_back(temp);
+	}
+	
+	std::cout<<"< 정렬 전 >"<<std::endl;
+	for (int i=0;i<N;i++){
+		std::cout<<v[i]<<" ";
+	}
+	std::cout<<std::endl;
+	
+	merge_sort merge_arr;
+	
+	merge_arr.temp.resize(N);
+	merge_arr.mergesort(v,0,N-1);
+	
+	std::cout<<"< 정렬 후 >"<<std::endl;
+	for (int i=0;i<N;i++){
+		std::cout<<v[i]<<" ";
+	}
+	std::cout<<std::endl;
+	
+	return 0;
+}

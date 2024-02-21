@@ -4,8 +4,6 @@
 
 //using namespace std;
 
-//오류여쭤보기 : nullptr was not declared in this scope
-
 class Node {
    public:
        int data;
@@ -118,18 +116,19 @@ class linked_list {
       //구분 
       Node* partition(Node* left, Node* right) {
           int pivot = left->data;
-          Node* low= left;
+          Node* low= left->next;
           Node* high= right;
       
-         while(low->data<=high->data){
+         while(low-!=high&&low->prev!=high){ //홀짝 
             while(pivot>=low->data && low!=high){
                low=low->next;
             }
             while(pivot<=high->data && low!=high){
                high=high->prev;
             }
-            
-            if (low->data<=high->data){
+
+            //헷갈리는 부분
+            if (low!=high){
                std::swap(low->data, high->data);
             }
          }
@@ -140,7 +139,7 @@ class linked_list {
       
       //파티션 함수 쓰기  
       void quicksort_recursive(Node* low, Node* high){
-         if (low!=high && low!=low->prev){
+         if (low!=high && low->prev!=high){
             if (high !=nullptr && low!= nullptr){
                Node* pivot = partition (low, high);
                quicksort_recursive(low, pivot->prev);
